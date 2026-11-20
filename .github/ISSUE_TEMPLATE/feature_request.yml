@@ -1,0 +1,21 @@
+name: Sugerencia
+description: Proponer una mejora o funcionalidad
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema o necesidad
+      description: ¿Qué querés resolver o mejorar?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Cómo te gustaría que funcione.
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto adicional
+      description: Alternativas consideradas, capturas, referencias.

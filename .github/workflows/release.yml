@@ -1,0 +1,47 @@
+# Release: se dispara al pushear un tag v*. Genera instalador NSIS + MSI.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build y publicación
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar toolchain Rust estable
+        run: rustup toolchain install stable --profile minimal
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Ficha del día ${{ github.ref_name }}"
+          releaseBody: |
+            ## Ficha del día ${{ github.ref_name }}
+
+            Instaladores de Windows disponibles: **NSIS** (`.exe`) y **MSI** (`.msi`).
+
+            - **Requisito:** Windows con [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/) (viene preinstalado en Windows 11 y en la mayoría de Windows 10).
+            - **Sin firma de código:** Windows SmartScreen puede mostrar una advertencia al abrir el instalador por primera vez; elegí "Más información" → "Ejecutar de todos modos".
+            - Instrucciones y detalles del proyecto en el [README](https://github.com/gam04/my-cve#readme).
+          releaseDraft: true
+          prerelease: false
+          args: --bundles nsis,msi

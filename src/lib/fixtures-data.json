@@ -1,0 +1,91 @@
+{
+  "boardDate": "2026-11-19",
+  "generatedAt": "2026-11-19T16:02:11Z",
+  "totalCriticalToday": 13,
+  "pick": {
+    "id": "CVE-2026-130778",
+    "published": "2026-11-18T19:17:53.607",
+    "score": 10.0,
+    "scoreVersion": "3.1",
+    "severity": "CRITICAL",
+    "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
+    "scoreSource": "cna",
+    "epss": 0.0027,
+    "epssPercentile": 0.19523,
+    "kev": false,
+    "kevDueDate": null,
+    "cwes": [
+      "CWE-287"
+    ],
+    "vendor": "lxc",
+    "product": "incus",
+    "summary": "Incus before 7.6.0 contains an authentication bypass vulnerability that allows remote attackers to authenticate as any trusted certificate by appending its public certificate to their presented TLS client chain. Attackers can append the server's or a cluster member's certificate to gain cluster-level access, bypass authorization, modify trust store entries, and influence scriptlet-based authorization decisions.",
+    "rank": 1
+  },
+  "runnersUp": [
+    {
+      "id": "CVE-2026-132141",
+      "published": "2026-11-18T22:17:19.960",
+      "score": 9.9,
+      "scoreVersion": "3.1",
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "scoreSource": "cna",
+      "epss": 0.00466,
+      "epssPercentile": 0.41122,
+      "kev": false,
+      "kevDueDate": null,
+      "cwes": [
+        "CWE-119",
+        "CWE-121"
+      ],
+      "vendor": "DrayTek",
+      "product": "Vigor2960",
+      "summary": "A vulnerability was detected in DrayTek Vigor2960 up to 1.5.1.6. Affected by this issue is the function json_load_lock of the file /cgi-bin/mainfunction.cgi of the component Jsonstatus. The manipulation of the argument usefile results in stack-based buffer overflow. It is possible to launch the attack remotely. The exploit is now public and may be used. Upgrading to version 1.5.1.7 can resolve this issue. It is advisable to upgrade the affected component. The vendor recommends: \"1.5.1.6 isn't the latest version of 2960, the latest version fixes many security issues. And we have another one in our release plan which should solve the issues reported.\"",
+      "rank": 2
+    },
+    {
+      "id": "CVE-2026-132143",
+      "published": "2026-11-18T22:17:20.360",
+      "score": 9.9,
+      "scoreVersion": "3.1",
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "scoreSource": "cna",
+      "epss": null,
+      "epssPercentile": null,
+      "kev": false,
+      "kevDueDate": null,
+      "cwes": [
+        "CWE-119",
+        "CWE-121"
+      ],
+      "vendor": "DrayTek",
+      "product": "Vigor2960",
+      "summary": "A vulnerability has been found in DrayTek Vigor2960 up to 1.5.1.6. This vulnerability affects the function doWebBackup of the file /cgi-bin/mainfunction.cgi of the component Backup Handler. Such manipulation of the argument path/value leads to stack-based buffer overflow. The attack can be launched remotely. The exploit has been disclosed to the public and may be used. Upgrading to version 1.5.1.7 is able to resolve this issue. The affected component should be upgraded. The vendor recommends: \"1.5.1.6 isn't the latest version of 2960, the latest version fixes many security issues. And we have another one in our release plan which should solve the issues reported.\"",
+      "rank": 3
+    },
+    {
+      "id": "CVE-2026-130786",
+      "published": "2026-11-18T19:17:55.157",
+      "score": 9.9,
+      "scoreVersion": "3.1",
+      "severity": "CRITICAL",
+      "vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H",
+      "scoreSource": "cna",
+      "epss": null,
+      "epssPercentile": null,
+      "kev": false,
+      "kevDueDate": null,
+      "cwes": [
+        "CWE-74"
+      ],
+      "vendor": "lxc",
+      "product": "incus",
+      "summary": "Incus before 7.6.0 contains a configuration injection vulnerability that allows users who can launch instances from controlled images to inject LXC directives by embedding line breaks in OCI config.json values or oci.entrypoint and oci.cwd keys. Attackers can add liblxc hooks or crafted tmpfs lxc.mount.entry fields to run commands as root on the host or bind-mount host paths, even from restricted projects.",
+      "rank": 4
+    }
+  ],
+  "stale": false,
+  "fetchError": null
+}

@@ -1,0 +1,8 @@
+{
+  "status": "OK",
+  "token": null,
+  "data": [
+    { "cve": "CVE-2026-130778", "epss": "0.00526", "percentile": "0.45321", "date": "2026-11-19" },
+    { "cve": "CVE-2012-20007", "epss": "0.01021", "percentile": "0.51000", "date": "2026-11-19" }
+  ]
+}

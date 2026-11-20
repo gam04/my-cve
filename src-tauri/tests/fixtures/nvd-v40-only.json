@@ -1,0 +1,61 @@
+{
+  "resultsPerPage": 1,
+  "startIndex": 0,
+  "totalResults": 1,
+  "format": "NVD_CVE",
+  "version": "2.0",
+  "timestamp": "2026-11-19T12:00:00.000",
+  "vulnerabilities": [
+    {
+      "cve": {
+        "id": "CVE-2026-99999",
+        "sourceIdentifier": "cna@example.com",
+        "published": "2026-11-19T10:00:00.000",
+        "lastModified": "2026-11-19T10:30:00.000",
+        "vulnStatus": "Received",
+        "descriptions": [
+          { "lang": "es", "value": "Descripción en español que debe ignorarse." },
+          { "lang": "en", "value": "Acme widget 1.2.3 contains an injection vulnerability with only a CVSS v4.0 metric. â€“ mojibake test" }
+        ],
+        "metrics": {
+          "cvssMetricV40": [
+            {
+              "type": "Primary",
+              "source": "cna@example.com",
+              "cvssData": {
+                "version": "4.0",
+                "vectorString": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+                "baseScore": 8.7,
+                "baseSeverity": "HIGH"
+              }
+            },
+            {
+              "type": "Secondary",
+              "source": "nvd@nist.gov",
+              "cvssData": {
+                "version": "4.0",
+                "vectorString": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:N/VC:L/VI:L/VA:L/SC:N/SI:N/SA:N",
+                "baseScore": 6.9,
+                "baseSeverity": "MEDIUM"
+              }
+            }
+          ]
+        },
+        "weaknesses": [
+          { "description": [ { "lang": "en", "value": "CWE-79" }, { "lang": "es", "value": "CWE-999" } ] },
+          { "description": [ { "lang": "en", "value": "CWE-79" } ] }
+        ],
+        "affected": [
+          {
+            "source": "cna@example.com",
+            "affectedData": [
+              { "vendor": "Acme", "product": "widget", "defaultStatus": "affected", "versions": [] }
+            ]
+          }
+        ],
+        "configurations": null,
+        "references": [{ "url": "https://example.com/advisory", "source": "cna@example.com" }]
+      }
+    }
+  ]
+}

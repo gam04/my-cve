@@ -1,0 +1,122 @@
+# CI para widget Tauri v2 (frontend Svelte 5 + backend Rust de Windows).
+# Nota: el producto es Windows (WebView2/MSVC), por eso el job de Rust corre en windows-latest.
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  ui:
+    name: UI (check, test, audit visual)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        # La versión se lee del campo packageManager de package.json.
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: svelte-check
+        run: pnpm check
+
+      - name: Tests unitarios
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Instalar Chromium para Playwright
+        run: pnpm exec playwright install --with-deps chromium
+
+      # audit.mjs y shot.mjs necesitan el server sirviendo dist en el puerto 1420.
+      # Se espera con un loop de curl (máx. 30 s) y siempre se mata el server.
+      - name: Auditoría visual sobre preview
+        shell: bash
+        run: |
+          pnpm exec vite preview --port 1420 --strictPort &
+          SERVER_PID=$!
+          for i in $(seq 1 30); do
+            if curl --fail --silent --output /dev/null http://localhost:1420; then
+              break
+            fi
+            if [ "$i" -eq 30 ]; then
+              echo "El server de preview no respondió en 30 s" >&2
+              kill $SERVER_PID
+              exit 1
+            fi
+            sleep 1
+          done
+          node scripts/audit.mjs
+          node scripts/shot.mjs
+          kill $SERVER_PID
+
+      # Se sube el artifact SIEMPRE: así un PR que arregle un bug visual puede
+      # comparar sus capturas contra las del branch base sin re-ejecutar nada.
+      - name: Subir capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: shots/
+          retention-days: 7
+
+  rust:
+    name: Rust (fmt, clippy, test)
+    runs-on: windows-latest
+    defaults:
+      run:
+        # En Windows no todos los shells tienen bash/curl; se fija explícito.
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Instalar componentes de Rust
+        run: rustup component add clippy rustfmt
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+
+      # Cargo test/clippy compila tauri::generate_context!(), que embebe
+      # frontendDist (../dist): si dist/ no existe, la compilación falla.
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Build del frontend
+        run: pnpm build
+
+      - name: Formato
+        run: cargo fmt --check --manifest-path src-tauri/Cargo.toml
+
+      - name: Clippy
+        # La primera compilación en frío tarda; no bajar de 20 min.
+        timeout-minutes: 30
+        run: cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
+
+      - name: Tests
+        timeout-minutes: 30
+        run: cargo test --manifest-path src-tauri/Cargo.toml

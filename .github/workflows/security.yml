@@ -1,0 +1,39 @@
+# Escaneo semanal de vulnerabilidades. Objetivo: informar, no bloquear
+# (cada check usa continue-on-error).
+name: Security
+
+on:
+  schedule:
+    # Lunes 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Audit (cargo + pnpm)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar cargo-audit
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-audit
+
+      - name: cargo audit
+        continue-on-error: true
+        run: cargo audit --file src-tauri/Cargo.lock
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: pnpm audit (dependencias de producción)
+        continue-on-error: true
+        run: pnpm audit --prod

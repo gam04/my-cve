@@ -1,0 +1,40 @@
+name: Bug
+description: Reportar un problema en la app o en el build
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Para vulnerabilidades de seguridad, **no** uses un issue público: seguí [SECURITY.md](https://github.com/gam04/my-cve/blob/master/SECURITY.md).
+  - type: textarea
+    id: what
+    attributes:
+      label: Qué pasó
+      description: Comportamiento observado y esperado.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Pasos para reproducir
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Versión de Ficha del día
+      placeholder: "0.1.0"
+  - type: input
+    id: windows
+    attributes:
+      label: Windows / WebView2
+      placeholder: "Windows 11 23H2, WebView2 ..."
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs o capturas
+      description: Si hay logs de la app o salida de consola, pegala aquí.
+      render: text
